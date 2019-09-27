@@ -12,6 +12,8 @@ def reward_function(params):
     marker_4 = 0.4 * params['track_width']
     marker_5 = 0.5 * params['track_width']
 
+    steering = abs(params['steering_angle']) # Only need the absolute steering angle
+
     if params['distance_from_center'] <= marker_1:
         reward += max_reward
     elif params['distance_from_center'] <= marker_2:
@@ -39,8 +41,17 @@ def reward_function(params):
     
     # if he is in center line then speed max
     if params['distance_from_center'] <= marker_1 or params['distance_from_center'] <= marker_2 :
-        if abs(params['speed']) > 3 :
+        if abs(params['speed']) >2 :
             reward *= max_reward
+
+    # pennelize steering
+
+    # Penalize reward if the agent is steering too much
+
+    ABS_STEERING_THRESHOLD = 15    
+    if steering > ABS_STEERING_THRESHOLD:
+        reward *= 0.8
+    
     
 
 
